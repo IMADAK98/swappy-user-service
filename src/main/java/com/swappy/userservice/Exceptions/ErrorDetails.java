@@ -1,4 +1,4 @@
-package com.swappy.userservice.Errors;
+package com.swappy.userservice.Exceptions;
 
 import lombok.*;
 

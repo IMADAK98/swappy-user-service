@@ -1,5 +1,9 @@
-package com.swappy.userservice.auth;
+package com.swappy.userservice.Controller;
 
+import com.swappy.userservice.auth.AuthenticationRequest;
+import com.swappy.userservice.auth.AuthenticationResponse;
+import com.swappy.userservice.auth.AuthenticationService;
+import com.swappy.userservice.auth.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -2,14 +2,13 @@ package com.swappy.userservice.auth;
 
 import com.swappy.userservice.Entity.Role;
 import com.swappy.userservice.Entity.User;
-import com.swappy.userservice.Errors.UserNotFoundException;
+import com.swappy.userservice.Exceptions.UserAlreadyExistsException;
+import com.swappy.userservice.Exceptions.UserNotFoundException;
 import com.swappy.userservice.Repo.UserRepo;
 import com.swappy.userservice.config.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +22,12 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
+
+        // Check if the email already exists in the repository
+        var existingUserOptional = repo.findByEmail(request.getEmail());
+        if (existingUserOptional.isPresent()) {
+            throw new UserAlreadyExistsException("Email already exists");
+        }
 
         var user = User.builder()
                 .firstName(request.getFirstName())

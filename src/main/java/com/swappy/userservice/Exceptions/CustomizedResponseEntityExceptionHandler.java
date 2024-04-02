@@ -1,4 +1,4 @@
-package com.swappy.userservice.Errors;
+package com.swappy.userservice.Exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
@@ -37,6 +36,13 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     public final ResponseEntity<Object> handleBadCredentialsException(Exception ex, WebRequest request){
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage() , request.getDescription(false));
         return  new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+    }
+
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public final ResponseEntity<Object> handleUserAlreadyExistsException(Exception ex, WebRequest request){
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage() , request.getDescription(false));
+        return  new ResponseEntity<>(errorDetails, HttpStatus.CONFLICT);
     }
 
 }
