@@ -18,7 +18,7 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "firstName")

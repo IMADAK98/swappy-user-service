@@ -1,5 +1,6 @@
 package com.swappy.userservice.config;
 
+import com.swappy.userservice.Entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -27,7 +28,7 @@ public class JwtService {
     }
 
 
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(User userDetails){
         return generateToken(new HashMap<>(),userDetails);
     }
 
@@ -37,15 +38,16 @@ public class JwtService {
 
     public String generateToken(
             Map<String, Object>  extraClaims,
-            UserDetails userDetails
+            User userDetails
     ){
 
         return Jwts.builder()
                 .claims()
                 .add(extraClaims)
                 .subject(userDetails.getUsername())
+                .id(userDetails.getId().toString())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis()+1000*60*24))
+                .expiration(new Date(System.currentTimeMillis()+1000*60*60*24))
                 .and()
                 .signWith(getSignInKey(), Jwts.SIG.HS256)
                 .compact();
@@ -74,6 +76,9 @@ public class JwtService {
                 parseSignedClaims(token).
                 getPayload();
     }
+
+
+
 
     private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);

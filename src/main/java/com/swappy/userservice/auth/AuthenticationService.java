@@ -36,8 +36,8 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
-        repo.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        var createdUser = repo.save(user);
+        var jwtToken = jwtService.generateToken(createdUser);
         // could send expiration date too
         return AuthenticationResponse.builder()
                 .token(jwtToken)
